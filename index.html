@@ -447,15 +447,72 @@ body {
     padding: 40px 10px;
     font-size: 0.9em;
 }
+
+/* Footer / Support Section */
+.footer {
+    margin-top: 60px;
+    padding: 40px 20px 30px;
+    background: linear-gradient(180deg, transparent, var(--bg-secondary));
+    border-top: 1px solid var(--border-color);
+}
+.support-section {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+.support-title {
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+.support-desc {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    font-size: 0.95em;
+}
+.kofi-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+.kofi-container a {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #FF5E5B;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1em;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(255, 94, 91, 0.3);
+}
+.kofi-container a:hover {
+    background: #FF4542;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 94, 91, 0.5);
+}
+.footer-note {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: var(--text-muted);
+    font-size: 0.85em;
+}
 </style>
 </head>
 <body>
 <div id="app">
     <header class="header">
-        <h1>⚔️ 강화 시뮬레이터</h1>
-        <div class="tab-bar">
-            <button class="tab-btn active" onclick="switchTab('manual')" id="tab-btn-manual">🔨 수동 강화</button>
-            <button class="tab-btn" onclick="switchTab('simulation')" id="tab-btn-simulation">📊 시뮬레이션</button>
+        <h1 id="header-title">⚔️ 강화 시뮬레이터</h1>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="switchTab('manual')" id="tab-btn-manual">🔨 수동 강화</button>
+                <button class="tab-btn" onclick="switchTab('simulation')" id="tab-btn-simulation">📊 시뮬레이션</button>
+            </div>
+            <button class="tab-btn" onclick="toggleLanguage()" id="lang-btn" style="min-width: 120px;">🌐 English</button>
         </div>
     </header>
 
@@ -500,12 +557,12 @@ body {
     <div id="tab-simulation" class="tab-content">
         <div class="sim-container">
             <div class="sim-controls">
-                <h2>🔬 자동 시뮬레이션</h2>
-                <p class="sim-desc">장비를 목표 레벨까지 강화하는 데 필요한 자원을 시뮬레이션합니다.<br>
+                <h2 id="sim-title">🔬 자동 시뮬레이션</h2>
+                <p class="sim-desc" id="sim-desc">장비를 목표 레벨까지 강화하는 데 필요한 자원을 시뮬레이션합니다.<br>
                 불능 시 새 장비를 추가하여 처음부터 다시 강화합니다.</p>
                 
                 <div class="sim-input-group">
-                    <label style="font-weight:bold;">목표 레벨:</label>
+                    <label style="font-weight:bold;" id="sim-target-label">목표 레벨:</label>
                     <select id="sim-target-level" onchange="updateSimulationOptions()" style="padding:8px 12px; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-size:1em;">
                         <option value="30">Lv.30</option>
                         <option value="35">Lv.35</option>
@@ -514,7 +571,7 @@ body {
                 </div>
                 
                 <div class="sim-input-group">
-                    <label style="font-weight:bold;">강화 전략:</label>
+                    <label style="font-weight:bold;" id="sim-strategy-label">강화 전략:</label>
                     <select id="sim-strategy" style="padding:8px 12px; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-size:1em;">
                         <option value="mixed">보석+금화 섞어서 (20~32 보석, 나머지 금화)</option>
                         <option value="goldOnly">금화만 사용 (20~목표레벨)</option>
@@ -522,7 +579,7 @@ body {
                 </div>
                 
                 <div class="sim-input-group">
-                    <label>시뮬레이션 횟수:</label>
+                    <label id="sim-count-label">시뮬레이션 횟수:</label>
                     <input type="number" id="sim-count" value="1000" min="1" max="100000">
                 </div>
                 
@@ -544,7 +601,202 @@ body {
     <div class="result-sub" id="result-sub"></div>
 </div>
 
+<!-- Footer / Support Section -->
+<footer class="footer">
+    <div class="support-section">
+        <div class="support-title" id="support-title">이 프로젝트가 도움이 되셨나요?</div>
+        <div class="support-desc" id="support-desc">커피 한 잔으로 개발자를 응원해주세요!</div>
+        <div class="kofi-container" id="kofi-container">
+            <a href="https://ko-fi.com/X8X81U30Z4" target="_blank">
+                ☕ Support me on Ko-fi
+            </a>
+        </div>
+        <div class="footer-note" id="footer-note">❤️ Made with passion</div>
+    </div>
+</footer>
+
 <script>
+// ============================================================
+// LANGUAGE SYSTEM
+// ============================================================
+let currentLang = 'ko';
+
+const translations = {
+    ko: {
+        title: '⚔️ 강화 시뮬레이터',
+        tabManual: '🔨 수동 강화',
+        tabSimulation: '📊 시뮬레이션',
+        langButton: '🌐 English',
+        currency: '금화',
+        gems: '보석',
+        chargeButton: '+100,000',
+        chargeGemButton: '+100',
+        inventory: '📦 장비 인벤토리',
+        addEquipment: '+ 장비 추가',
+        enhance: '🔨 강화',
+        enhanceLog: '📜 강화 기록',
+        emptyInventory: '장비가 없습니다.<br>"+ 장비 추가" 버튼을 눌러 시작하세요.',
+        selectEquipment: '⬅️ 장비를 선택하거나 추가하세요',
+        disabled: '불능',
+        discard: '버리기',
+        level: 'Lv.',
+        maxLevel: '🏆 Lv.MAX',
+        maxAchieved: '✨ 최대 강화 달성! ✨',
+        safetyFloor: '안전 하한',
+        goldEnhance: '🪙 금화 강화',
+        gemEnhance: '💎 보석 강화',
+        success: '성공',
+        failure: '실패',
+        disable: '불능',
+        cost: '비용',
+        insufficient: '(부족)',
+        noDisable: '✔ 불능 없음',
+        enhanceButton: '⚒️ 금화로 강화',
+        gemEnhanceButton: '💎 보석으로 강화',
+        gemUnavailable: 'Lv.32 이하에서만 사용 가능',
+        enhanceSuccess: '강화 성공!',
+        enhanceFailure: '강화 실패',
+        equipmentDisabled: '장비 불능!',
+        cannotEnhanceMore: '더 이상 강화할 수 없습니다',
+        maintain: '유지',
+        disabledEquipment: '이 장비는 더 이상 강화할 수 없습니다.<br>버리고 새 장비를 추가하세요.',
+        attempts: '시도',
+        successes: '성공',
+        failures: '실패',
+        disables: '불능',
+        goldSpent: '금화',
+        gemsSpent: '보석',
+        simTitle: '🔬 자동 시뮬레이션',
+        simDesc: '장비를 목표 레벨까지 강화하는 데 필요한 자원을 시뮬레이션합니다.<br>불능 시 새 장비를 추가하여 처음부터 다시 강화합니다.',
+        targetLevel: '목표 레벨:',
+        strategy: '강화 전략:',
+        simCount: '시뮬레이션 횟수:',
+        runSim: '🚀 시뮬레이션 실행',
+        strategyMixed: '보석+금화 섞어서 (20~32 보석, 나머지 금화)',
+        strategyGoldOnly: '금화만 사용',
+        strategyGemOnly: '보석만 사용',
+        simResults: '📊 시뮬레이션 결과',
+        target: '목표',
+        strategyLabel: '전략',
+        achieved: '달성',
+        average: '평균',
+        median: '중앙값',
+        min: '최솟값',
+        max: '최댓값',
+        stdDev: '표준편차',
+        lowerQuartile: '하위 25%',
+        upperQuartile: '상위 25%',
+        equipmentUsed: '🛡️ 사용된 장비 수',
+        equipmentUsedFull: '🛡️ 사용된 총 장비 수 분포',
+        includesSuccess: '(최종 성공한 장비 1개 포함)',
+        goldDistribution: '🪙 금화 소모 분포',
+        gemDistribution: '💎 보석 소모 분포',
+        count: '개',
+        times: '회',
+        totalSims: '총',
+        simulations: '회 시뮬레이션',
+        hoverDetails: '마우스 오버로 상세 정보',
+        barCount: '개 구간',
+        actualDistribution: '📊 실제 분포',
+        eachSection: '📄 각 구간: 약',
+        supportTitle: '이 프로젝트가 도움이 되셨나요?',
+        supportDesc: '커피 한 잔으로 개발자를 응원해주세요!',
+        madeWith: '❤️ Made with passion'
+    },
+    en: {
+        title: '⚔️ Enhancement Simulator',
+        tabManual: '🔨 Manual',
+        tabSimulation: '📊 Simulation',
+        langButton: '🌐 한국어',
+        currency: 'Gold',
+        gems: 'Gems',
+        chargeButton: '+100,000',
+        chargeGemButton: '+100',
+        inventory: '📦 Equipment Inventory',
+        addEquipment: '+ Add Equipment',
+        enhance: '🔨 Enhancement',
+        enhanceLog: '📜 Enhancement Log',
+        emptyInventory: 'No equipment available.<br>Click "+ Add Equipment" to start.',
+        selectEquipment: '⬅️ Select or add equipment',
+        disabled: 'Disabled',
+        discard: 'Discard',
+        level: 'Lv.',
+        maxLevel: '🏆 Lv.MAX',
+        maxAchieved: '✨ Maximum Enhancement Achieved! ✨',
+        safetyFloor: 'Safety Floor',
+        goldEnhance: '🪙 Gold Enhancement',
+        gemEnhance: '💎 Gem Enhancement',
+        success: 'Success',
+        failure: 'Failure',
+        disable: 'Disable',
+        cost: 'Cost',
+        insufficient: '(Insufficient)',
+        noDisable: '✔ No Disable',
+        enhanceButton: '⚒️ Enhance with Gold',
+        gemEnhanceButton: '💎 Enhance with Gems',
+        gemUnavailable: 'Available only at Lv.32 or below',
+        enhanceSuccess: 'Enhancement Success!',
+        enhanceFailure: 'Enhancement Failed',
+        equipmentDisabled: 'Equipment Disabled!',
+        cannotEnhanceMore: 'Cannot be enhanced further',
+        maintain: 'Maintained',
+        disabledEquipment: 'This equipment cannot be enhanced anymore.<br>Discard it and add new equipment.',
+        attempts: 'Attempts',
+        successes: 'Success',
+        failures: 'Failures',
+        disables: 'Disables',
+        goldSpent: 'Gold',
+        gemsSpent: 'Gems',
+        simTitle: '🔬 Auto Simulation',
+        simDesc: 'Simulates resources needed to enhance equipment to target level.<br>When disabled, adds new equipment and starts from scratch.',
+        targetLevel: 'Target Level:',
+        strategy: 'Enhancement Strategy:',
+        simCount: 'Simulation Count:',
+        runSim: '🚀 Run Simulation',
+        strategyMixed: 'Mixed (20~32 Gems, rest Gold)',
+        strategyGoldOnly: 'Gold Only',
+        strategyGemOnly: 'Gems Only',
+        simResults: '📊 Simulation Results',
+        target: 'Target',
+        strategyLabel: 'Strategy',
+        achieved: 'Achieved',
+        average: 'Average',
+        median: 'Median',
+        min: 'Minimum',
+        max: 'Maximum',
+        stdDev: 'Std Dev',
+        lowerQuartile: 'Lower 25%',
+        upperQuartile: 'Upper 25%',
+        equipmentUsed: '🛡️ Equipment Used',
+        equipmentUsedFull: '🛡️ Total Equipment Used Distribution',
+        includesSuccess: '(includes 1 successful equipment)',
+        goldDistribution: '🪙 Gold Consumption Distribution',
+        gemDistribution: '💎 Gem Consumption Distribution',
+        count: '',
+        times: 'times',
+        totalSims: 'Total',
+        simulations: 'simulations',
+        hoverDetails: 'hover for details',
+        barCount: 'sections',
+        actualDistribution: '📊 Actual Distribution',
+        eachSection: '📄 Each section: approx',
+        supportTitle: 'Did this project help you?',
+        supportDesc: 'Support the developer with a coffee!',
+        madeWith: '❤️ Made with passion'
+    }
+};
+
+function t(key) {
+    return translations[currentLang][key] || key;
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === 'ko' ? 'en' : 'ko';
+    document.getElementById('lang-btn').textContent = t('langButton');
+    updateSimulationOptions();
+    renderAll();
+}
+
 // ============================================================
 // DATA
 // ============================================================
@@ -588,7 +840,10 @@ const GEM_DATA = {
 };
 
 const CHECKPOINTS = [20, 25, 30, 35, 40];
-const EQUIP_TYPES = ['쌍검','장창','오브','단검','가면','방패'];
+const EQUIP_TYPES = {
+    ko: ['쌍검','장창','오브','단검','가면','방패'],
+    en: ['Dual Swords','Spear','Orb','Dagger','Mask','Shield']
+};
 
 // ============================================================
 // STATE
@@ -636,7 +891,8 @@ function getSelectedEquip() {
 // GAME LOGIC
 // ============================================================
 function addEquipment() {
-    const type = EQUIP_TYPES[Math.floor(Math.random() * EQUIP_TYPES.length)];
+    const types = EQUIP_TYPES[currentLang];
+    const type = types[Math.floor(Math.random() * types.length)];
     const equip = {
         id: state.nextId++,
         name: type + ' #' + (state.nextId - 1),
@@ -662,11 +918,13 @@ function discardEquipment(id) {
 function chargeGold() {
     state.gold += 100000;
     renderCurrency();
+    renderEnhancePanel();
 }
 
 function chargeGems() {
     state.gems += 100;
     renderCurrency();
+    renderEnhancePanel();
 }
 
 function enhance(currency) {
@@ -718,12 +976,15 @@ function enhance(currency) {
 
 function addLog(type, name, fromLv, toLv, costLabel) {
     const icons = { success: '✅', failure: '❌', disable: '💀' };
-    const msgs = {
-        success: `[${name}] Lv.${fromLv} → Lv.${toLv}`,
-        failure: `[${name}] Lv.${fromLv} → Lv.${toLv}`,
-        disable: `[${name}] Lv.${fromLv} 불능!`
-    };
-    state.log.unshift({ type, text: `${icons[type]} ${msgs[type]} (${costLabel})` });
+    let msg;
+    if (type === 'success') {
+        msg = `[${name}] ${t('level')}${fromLv} → ${t('level')}${toLv}`;
+    } else if (type === 'failure') {
+        msg = `[${name}] ${t('level')}${fromLv} → ${t('level')}${toLv}`;
+    } else {
+        msg = `[${name}] ${t('level')}${fromLv} ${t('disabled')}!`;
+    }
+    state.log.unshift({ type, text: `${icons[type]} ${msg} (${costLabel})` });
     if (state.log.length > 100) state.log.length = 100;
 }
 
@@ -740,17 +1001,17 @@ function showResultOverlay(type, fromLv, toLv) {
 
     if (type === 'success') {
         iconEl.textContent = '⬆️';
-        textEl.textContent = '강화 성공!';
-        subEl.textContent = `Lv.${fromLv} → Lv.${toLv}`;
+        textEl.textContent = t('enhanceSuccess');
+        subEl.textContent = `${t('level')}${fromLv} → ${t('level')}${toLv}`;
     } else if (type === 'failure') {
         iconEl.textContent = '⬇️';
-        textEl.textContent = '강화 실패';
-        subEl.textContent = fromLv === toLv ? `Lv.${fromLv} 유지` : `Lv.${fromLv} → Lv.${toLv}`;
+        textEl.textContent = t('enhanceFailure');
+        subEl.textContent = fromLv === toLv ? `${t('level')}${fromLv} ${t('maintain')}` : `${t('level')}${fromLv} → ${t('level')}${toLv}`;
         overlay.classList.add('shake');
     } else {
         iconEl.textContent = '💀';
-        textEl.textContent = '장비 불능!';
-        subEl.textContent = '더 이상 강화할 수 없습니다';
+        textEl.textContent = t('equipmentDisabled');
+        subEl.textContent = t('cannotEnhanceMore');
     }
 
     clearTimeout(resultTimer);
@@ -763,22 +1024,49 @@ function showResultOverlay(type, fromLv, toLv) {
 // RENDERING
 // ============================================================
 function renderAll() {
+    document.getElementById('header-title').textContent = t('title');
+    document.getElementById('tab-btn-manual').textContent = t('tabManual');
+    document.getElementById('tab-btn-simulation').textContent = t('tabSimulation');
     renderCurrency();
     renderInventory();
     renderEnhancePanel();
     renderLog();
     renderManualStats();
+    renderFooter();
+}
+
+function renderFooter() {
+    const supportTitle = document.getElementById('support-title');
+    const supportDesc = document.getElementById('support-desc');
+    const footerNote = document.getElementById('footer-note');
+    
+    if (supportTitle) supportTitle.textContent = t('supportTitle');
+    if (supportDesc) supportDesc.textContent = t('supportDesc');
+    if (footerNote) footerNote.textContent = t('madeWith');
 }
 
 function renderCurrency() {
     document.getElementById('gold-display').textContent = fmt(state.gold);
     document.getElementById('gem-display').textContent = fmt(state.gems);
+    
+    // Update currency labels
+    const goldLabel = document.querySelector('.currency-item:nth-child(1) .currency-label');
+    const gemLabel = document.querySelector('.currency-item:nth-child(2) .currency-label');
+    if (goldLabel) goldLabel.textContent = t('currency');
+    if (gemLabel) gemLabel.textContent = t('gems');
 }
 
 function renderInventory() {
     const list = document.getElementById('equip-list');
+    
+    // Update inventory panel title
+    const inventoryTitle = document.querySelector('.inventory-panel .panel-title span');
+    if (inventoryTitle) inventoryTitle.textContent = t('inventory');
+    const addBtn = document.querySelector('.inventory-panel .add-btn');
+    if (addBtn) addBtn.textContent = t('addEquipment');
+    
     if (state.equipment.length === 0) {
-        list.innerHTML = '<div class="empty-inventory">장비가 없습니다.<br>"+ 장비 추가" 버튼을 눌러 시작하세요.</div>';
+        list.innerHTML = `<div class="empty-inventory">${t('emptyInventory')}</div>`;
         return;
     }
     let html = '';
@@ -789,7 +1077,7 @@ function renderInventory() {
         const tierColors = { 1: 'var(--tier1)', 2: 'var(--tier2)', 3: 'var(--tier3)', 4: 'var(--tier4)', 5: 'var(--tier5)' };
 
         let badge = '';
-        if (eq.disabled) badge = '<span class="equip-badge badge-disabled">불능</span>';
+        if (eq.disabled) badge = `<span class="equip-badge badge-disabled">${t('disabled')}</span>`;
         else if (eq.level >= 40) badge = '<span class="equip-badge badge-max">MAX</span>';
 
         let miniBar = '<div class="equip-mini-bar">';
@@ -802,11 +1090,11 @@ function renderInventory() {
         html += `<div class="equip-card${sel}${dis}" onclick="selectEquipment(${eq.id})">
             <div class="equip-info">
                 <div class="equip-name" style="color:${tierColors[tier]}">${eq.name}</div>
-                <div class="equip-level">Lv.${eq.level} / 40</div>
+                <div class="equip-level">${t('level')}${eq.level} / 40</div>
                 ${miniBar}
             </div>
             ${badge}
-            <button class="discard-btn" onclick="event.stopPropagation(); discardEquipment(${eq.id})">버리기</button>
+            <button class="discard-btn" onclick="event.stopPropagation(); discardEquipment(${eq.id})">${t('discard')}</button>
         </div>`;
     }
     list.innerHTML = html;
@@ -815,17 +1103,21 @@ function renderInventory() {
 function renderEnhancePanel() {
     const content = document.getElementById('enhance-content');
     const equip = getSelectedEquip();
+    
+    // Update enhance panel title
+    const enhanceTitle = document.querySelector('.enhance-panel .panel-title span');
+    if (enhanceTitle) enhanceTitle.textContent = t('enhance');
 
     if (!equip) {
-        content.innerHTML = '<div class="enhance-empty">⬅️ 장비를 선택하거나 추가하세요</div>';
+        content.innerHTML = `<div class="enhance-empty">${t('selectEquipment')}</div>`;
         return;
     }
 
     if (equip.disabled) {
         content.innerHTML = `<div class="enhance-header">
             <div class="enhance-equip-name" style="color:var(--disable-color);text-decoration:line-through">${equip.name}</div>
-            <div class="enhance-level-display" style="color:var(--disable-color)">💀 불능</div>
-            <p style="color:var(--text-muted)">이 장비는 더 이상 강화할 수 없습니다.<br>버리고 새 장비를 추가하세요.</p>
+            <div class="enhance-level-display" style="color:var(--disable-color)">💀 ${t('disabled')}</div>
+            <p style="color:var(--text-muted)">${t('disabledEquipment')}</p>
         </div>`;
         return;
     }
@@ -833,9 +1125,9 @@ function renderEnhancePanel() {
     if (equip.level >= 40) {
         content.innerHTML = `<div class="enhance-header">
             <div class="enhance-equip-name" style="color:var(--tier5)">${equip.name}</div>
-            <div class="enhance-level-display" style="color:var(--tier5)">🏆 Lv.MAX</div>
+            <div class="enhance-level-display" style="color:var(--tier5)">${t('maxLevel')}</div>
             ${buildLevelBar(equip.level)}
-            <p style="color:var(--accent-gold);font-size:1.1em;margin-top:10px">✨ 최대 강화 달성! ✨</p>
+            <p style="color:var(--accent-gold);font-size:1.1em;margin-top:10px">${t('maxAchieved')}</p>
         </div>`;
         return;
     }
@@ -846,9 +1138,9 @@ function renderEnhancePanel() {
 
     let html = `<div class="enhance-header">
         <div class="enhance-equip-name" style="color:${tierColor}">${equip.name}</div>
-        <div class="enhance-level-display" style="color:${tierColor}">Lv.${equip.level}</div>
+        <div class="enhance-level-display" style="color:${tierColor}">${t('level')}${equip.level}</div>
         ${buildLevelBar(equip.level)}
-        <div style="font-size:0.8em;color:var(--text-muted);margin-top:4px">안전 하한: Lv.${floor}</div>
+        <div style="font-size:0.8em;color:var(--text-muted);margin-top:4px">${t('safetyFloor')}: ${t('level')}${floor}</div>
     </div>`;
 
     html += '<div class="enhance-options">';
@@ -858,17 +1150,17 @@ function renderEnhancePanel() {
     if (gd) {
         const canAffordGold = state.gold >= gd.cost;
         html += `<div class="enhance-option-card">
-            <h3>🪙 금화 강화</h3>
+            <h3>${t('goldEnhance')}</h3>
             <div class="prob-bar-container">
-                ${probRow('성공', gd.success, 'prob-success')}
-                ${probRow('실패', gd.fail, 'prob-fail')}
-                ${probRow('불능', gd.disable, 'prob-disable')}
+                ${probRow(t('success'), gd.success, 'prob-success')}
+                ${probRow(t('failure'), gd.fail, 'prob-fail')}
+                ${probRow(t('disable'), gd.disable, 'prob-disable')}
             </div>
-            <div class="cost-display">비용: <strong style="color:var(--accent-gold)">${fmt(gd.cost)} 🪙</strong>
-                ${canAffordGold ? '' : '<span style="color:var(--fail-color);font-size:0.8em"> (부족)</span>'}
+            <div class="cost-display">${t('cost')}: <strong style="color:var(--accent-gold)">${fmt(gd.cost)} 🪙</strong>
+                ${canAffordGold ? '' : `<span style="color:var(--fail-color);font-size:0.8em"> ${t('insufficient')}</span>`}
             </div>
             <button class="enhance-btn gold-enhance" onclick="enhance('gold')" ${canAffordGold ? '' : 'disabled'}>
-                ⚒️ 금화로 강화 (Lv.${equip.level} → ${equip.level + 1})
+                ${t('enhanceButton')} (${t('level')}${equip.level} → ${equip.level + 1})
             </button>
         </div>`;
     }
@@ -879,24 +1171,24 @@ function renderEnhancePanel() {
         if (gemd) {
             const canAffordGem = state.gems >= gemd.cost;
             html += `<div class="enhance-option-card">
-                <h3>💎 보석 강화</h3>
+                <h3>${t('gemEnhance')}</h3>
                 <div class="prob-bar-container">
-                    ${probRow('성공', gemd.success, 'prob-success')}
-                    ${probRow('실패', gemd.fail, 'prob-fail')}
+                    ${probRow(t('success'), gemd.success, 'prob-success')}
+                    ${probRow(t('failure'), gemd.fail, 'prob-fail')}
                 </div>
-                <div style="font-size:0.8em;color:var(--success-color);margin:4px 0">✔ 불능 없음</div>
-                <div class="cost-display">비용: <strong style="color:var(--accent-gem)">${fmt(gemd.cost)} 💎</strong>
-                    ${canAffordGem ? '' : '<span style="color:var(--fail-color);font-size:0.8em"> (부족)</span>'}
+                <div style="font-size:0.8em;color:var(--success-color);margin:4px 0">${t('noDisable')}</div>
+                <div class="cost-display">${t('cost')}: <strong style="color:var(--accent-gem)">${fmt(gemd.cost)} 💎</strong>
+                    ${canAffordGem ? '' : `<span style="color:var(--fail-color);font-size:0.8em"> ${t('insufficient')}</span>`}
                 </div>
                 <button class="enhance-btn gem-enhance" onclick="enhance('gem')" ${canAffordGem ? '' : 'disabled'}>
-                    💎 보석으로 강화 (Lv.${equip.level} → ${equip.level + 1})
+                    ${t('gemEnhanceButton')} (${t('level')}${equip.level} → ${equip.level + 1})
                 </button>
             </div>`;
         }
     } else {
         html += `<div class="enhance-option-card" style="opacity:0.4">
-            <h3>💎 보석 강화</h3>
-            <div class="enhance-unavailable">Lv.32 이하에서만 사용 가능</div>
+            <h3>${t('gemEnhance')}</h3>
+            <div class="enhance-unavailable">${t('gemUnavailable')}</div>
         </div>`;
     }
 
@@ -931,6 +1223,9 @@ function probRow(label, pct, cls) {
 function renderLog() {
     const section = document.getElementById('enhance-log-section');
     const list = document.getElementById('log-list');
+    const logTitle = document.querySelector('#enhance-log-section .log-title');
+    if (logTitle) logTitle.textContent = t('enhanceLog');
+    
     if (state.log.length === 0) {
         section.style.display = 'none';
         return;
@@ -947,12 +1242,12 @@ function renderManualStats() {
     if (s.attempts === 0) { el.style.display = 'none'; return; }
     el.style.display = 'grid';
     el.innerHTML = `
-        <span>시도 <span class="stat-val">${fmt(s.attempts)}</span></span>
-        <span>성공 <span class="stat-val" style="color:var(--success-color)">${fmt(s.successes)}</span></span>
-        <span>실패 <span class="stat-val" style="color:var(--fail-color)">${fmt(s.failures)}</span></span>
-        <span>불능 <span class="stat-val" style="color:var(--disable-color)">${fmt(s.disables)}</span></span>
-        <span>금화 <span class="stat-val" style="color:var(--accent-gold)">${fmt(s.goldSpent)}</span></span>
-        <span>보석 <span class="stat-val" style="color:var(--accent-gem)">${fmt(s.gemsSpent)}</span></span>
+        <span>${t('attempts')} <span class="stat-val">${fmt(s.attempts)}</span></span>
+        <span>${t('successes')} <span class="stat-val" style="color:var(--success-color)">${fmt(s.successes)}</span></span>
+        <span>${t('failures')} <span class="stat-val" style="color:var(--fail-color)">${fmt(s.failures)}</span></span>
+        <span>${t('disables')} <span class="stat-val" style="color:var(--disable-color)">${fmt(s.disables)}</span></span>
+        <span>${t('goldSpent')} <span class="stat-val" style="color:var(--accent-gold)">${fmt(s.goldSpent)}</span></span>
+        <span>${t('gemsSpent')} <span class="stat-val" style="color:var(--accent-gem)">${fmt(s.gemsSpent)}</span></span>
     `;
 }
 
@@ -978,24 +1273,50 @@ function updateSimulationOptions() {
     
     if (targetLevel === 30) {
         // 30레벨: 보석만, 금화만, 섞어서
+        const gemOnly = currentLang === 'ko' ? '보석만 사용 (20~30)' : 'Gems Only (20~30)';
+        const goldOnly = currentLang === 'ko' ? '금화만 사용 (20~30)' : 'Gold Only (20~30)';
+        const mixed = currentLang === 'ko' ? '보석+금화 섞어서 (20~30 보석, 31~ 금화는 없음)' : 'Mixed (20~30 Gems, no gold after)';
         strategySelect.innerHTML = `
-            <option value="gemOnly">보석만 사용 (20~30)</option>
-            <option value="goldOnly">금화만 사용 (20~30)</option>
-            <option value="mixed">보석+금화 섞어서 (20~30 보석, 31~ 금화는 없음)</option>
+            <option value="gemOnly">${gemOnly}</option>
+            <option value="goldOnly">${goldOnly}</option>
+            <option value="mixed">${mixed}</option>
         `;
     } else if (targetLevel === 35) {
         // 35레벨: 금화만, 섞어서
+        const mixed = currentLang === 'ko' ? '보석+금화 섞어서 (20~32 보석, 33~35 금화)' : 'Mixed (20~32 Gems, 33~35 Gold)';
+        const goldOnly = currentLang === 'ko' ? '금화만 사용 (20~35)' : 'Gold Only (20~35)';
         strategySelect.innerHTML = `
-            <option value="mixed">보석+금화 섞어서 (20~32 보석, 33~35 금화)</option>
-            <option value="goldOnly">금화만 사용 (20~35)</option>
+            <option value="mixed">${mixed}</option>
+            <option value="goldOnly">${goldOnly}</option>
         `;
     } else {
         // 40레벨: 금화만, 섞어서
+        const mixed = currentLang === 'ko' ? '보석+금화 섞어서 (20~32 보석, 33~40 금화)' : 'Mixed (20~32 Gems, 33~40 Gold)';
+        const goldOnly = currentLang === 'ko' ? '금화만 사용 (20~40)' : 'Gold Only (20~40)';
         strategySelect.innerHTML = `
-            <option value="mixed">보석+금화 섞어서 (20~32 보석, 33~40 금화)</option>
-            <option value="goldOnly">금화만 사용 (20~40)</option>
+            <option value="mixed">${mixed}</option>
+            <option value="goldOnly">${goldOnly}</option>
         `;
     }
+    
+    // Update labels
+    updateSimulationLabels();
+}
+
+function updateSimulationLabels() {
+    const simTitle = document.getElementById('sim-title');
+    const simDesc = document.getElementById('sim-desc');
+    const targetLabel = document.getElementById('sim-target-label');
+    const strategyLabel = document.getElementById('sim-strategy-label');
+    const countLabel = document.getElementById('sim-count-label');
+    const runBtn = document.getElementById('sim-run-btn');
+    
+    if (simTitle) simTitle.textContent = t('simTitle');
+    if (simDesc) simDesc.innerHTML = t('simDesc');
+    if (targetLabel) targetLabel.textContent = t('targetLevel');
+    if (strategyLabel) strategyLabel.textContent = t('strategy');
+    if (countLabel) countLabel.textContent = t('simCount');
+    if (runBtn) runBtn.textContent = t('runSim');
 }
 
 function simulateOnce(targetLevel, strategy) {
@@ -1129,43 +1450,50 @@ function renderSimResults(results, count, targetLevel, strategy) {
 
     // 전략 설명
     const strategyNames = {
-        'gemOnly': '보석만 사용',
-        'goldOnly': '금화만 사용',
-        'mixed': '보석+금화 섞어서'
+        'gemOnly': currentLang === 'ko' ? '보석만 사용' : 'Gems Only',
+        'goldOnly': currentLang === 'ko' ? '금화만 사용' : 'Gold Only',
+        'mixed': currentLang === 'ko' ? '보석+금화 섞어서' : 'Mixed (Gems + Gold)'
     };
     const strategyDesc = strategyNames[strategy] || strategy;
 
-    let html = `<h3>📊 시뮬레이션 결과 (${fmt(count)}회)</h3>`;
+    let html = `<h3>${t('simResults')} (${fmt(count)}${t('times')})</h3>`;
     html += `<div style="margin-bottom:16px; padding:12px; background:var(--bg-secondary); border-radius:8px; border-left:4px solid var(--accent-gold);">
-        <strong>목표:</strong> Lv.${targetLevel} 달성 | <strong>전략:</strong> ${strategyDesc}
+        <strong>${t('target')}:</strong> ${t('level')}${targetLevel} ${t('achieved')} | <strong>${t('strategyLabel')}:</strong> ${strategyDesc}
     </div>`;
     
+    const equipHeader = currentLang === 'ko' 
+        ? '🛡️ 사용된 장비 수<br><span style="font-size:0.8em;color:var(--text-muted);font-weight:normal;">(성공 1개 포함)</span>'
+        : '🛡️ Equipment Used<br><span style="font-size:0.8em;color:var(--text-muted);font-weight:normal;">(includes 1 success)</span>';
+    
     html += `<table class="stats-table">
-        <tr><th></th><th>🪙 금화</th><th>💎 보석</th><th>🛡️ 사용된 장비 수<br><span style="font-size:0.8em;color:var(--text-muted);font-weight:normal;">(성공 1개 포함)</span></th></tr>
-        ${statsRow('평균', gs.mean, ges.mean, es.mean)}
-        ${statsRow('중앙값', gs.median, ges.median, es.median)}
-        ${statsRow('최솟값', gs.min, ges.min, es.min)}
-        ${statsRow('최댓값', gs.max, ges.max, es.max)}
-        ${statsRow('표준편차', gs.stdDev, ges.stdDev, es.stdDev)}
-        ${statsRow('하위 25%', gs.p25, ges.p25, es.p25)}
-        ${statsRow('상위 25%', gs.p75, ges.p75, es.p75)}
+        <tr><th></th><th>🪙 ${t('currency')}</th><th>💎 ${t('gems')}</th><th>${equipHeader}</th></tr>
+        ${statsRow(t('average'), gs.mean, ges.mean, es.mean)}
+        ${statsRow(t('median'), gs.median, ges.median, es.median)}
+        ${statsRow(t('min'), gs.min, ges.min, es.min)}
+        ${statsRow(t('max'), gs.max, ges.max, es.max)}
+        ${statsRow(t('stdDev'), gs.stdDev, ges.stdDev, es.stdDev)}
+        ${statsRow(t('lowerQuartile'), gs.p25, ges.p25, es.p25)}
+        ${statsRow(t('upperQuartile'), gs.p75, ges.p75, es.p75)}
     </table>`;
 
     // Equipment count distribution
     html += '<div class="dist-section">';
-    html += '<div class="dist-title">🛡️ 사용된 총 장비 수 분포 <span style="font-size:0.85em;color:var(--text-muted);">(최종 성공한 장비 1개 포함)</span></div>';
-    html += buildSmoothHistogram(equips, 'var(--tier3)', count, '개', true);
+    const equipTitle = currentLang === 'ko'
+        ? '🛡️ 사용된 총 장비 수 분포 <span style="font-size:0.85em;color:var(--text-muted);">(최종 성공한 장비 1개 포함)</span>'
+        : '🛡️ Total Equipment Used Distribution <span style="font-size:0.85em;color:var(--text-muted);">(includes 1 successful equipment)</span>';
+    html += `<div class="dist-title">${equipTitle}</div>`;
+    html += buildSmoothHistogram(equips, 'var(--tier3)', count, t('count'), true);
     html += '</div>';
 
     // Gold distribution (buckets)
     html += '<div class="dist-section" style="margin-top:16px">';
-    html += '<div class="dist-title">🪙 금화 소모 분포</div>';
+    html += `<div class="dist-title">${t('goldDistribution')}</div>`;
     html += buildHistogram(golds, 'var(--accent-gold)', count);
     html += '</div>';
 
     // Gem distribution
     html += '<div class="dist-section" style="margin-top:16px">';
-    html += '<div class="dist-title">💎 보석 소모 분포</div>';
+    html += `<div class="dist-title">${t('gemDistribution')}</div>`;
     html += buildHistogram(gems, 'var(--accent-gem)', count);
     html += '</div>';
 
@@ -1239,7 +1567,7 @@ function buildSmoothHistogram(values, color, total, unit = '', isDiscrete = fals
         
         // 막대 그리기 (interactive)
         const tooltipRange = `${fmt(Math.round(rangeStart))} ~ ${fmt(Math.round(rangeEnd))}${unit}`;
-        const tooltipCount = `${fmt(actualCount)}회 (${percentage}%)`;
+        const tooltipCount = `${fmt(actualCount)}${currentLang === 'ko' ? '회' : 'times'} (${percentage}%)`;
         html += `<rect class="dist-bar-interactive" x="${x + 1}" y="${y}" width="${barWidth - 2}" height="${height}" 
                  fill="${color}" opacity="0.8" stroke="${color}" stroke-width="1"
                  onmouseover="showBarTooltip(event, '${tooltipRange.replace(/'/g, "&#39;")}', '${tooltipCount.replace(/'/g, "&#39;")}', '${tooltipId}')"
@@ -1272,8 +1600,9 @@ function buildSmoothHistogram(values, color, total, unit = '', isDiscrete = fals
     
     // 평균선 표시
     const meanX = 60 + ((mean - min) / range * chartWidth);
+    const meanLabel = currentLang === 'ko' ? '평균' : 'Mean';
     html += `<line stroke="white" stroke-width="3" stroke-dasharray="8,4" x1="${meanX}" y1="35" x2="${meanX}" y2="230" opacity="0.9"/>`;
-    html += `<text class="dist-value-text" x="${meanX}" y="25" text-anchor="middle" fill="white">평균</text>`;
+    html += `<text class="dist-value-text" x="${meanX}" y="25" text-anchor="middle" fill="white">${meanLabel}</text>`;
     
     // ±1σ 구간 표시 (실제 표준편차 기반, 차트 범위 내만)
     const sigma1L_x = 60 + ((mean - stdDev - min) / range * chartWidth);
@@ -1295,17 +1624,27 @@ function buildSmoothHistogram(values, color, total, unit = '', isDiscrete = fals
     html += '</div>';
     
     // 통계 정보
+    const avgLabel = currentLang === 'ko' ? '평균' : 'Average';
+    const medLabel = currentLang === 'ko' ? '중앙값' : 'Median';
+    const stdLabel = currentLang === 'ko' ? '표준편차' : 'Std Dev';
+    
     html += '<div class="dist-stats">';
-    html += `<div class="dist-stat"><span class="dist-stat-label">평균</span><span class="dist-stat-value">${fmt(Math.round(mean))}${unit}</span></div>`;
-    html += `<div class="dist-stat"><span class="dist-stat-label">중앙값</span><span class="dist-stat-value">${fmt(Math.round(median))}${unit}</span></div>`;
-    html += `<div class="dist-stat"><span class="dist-stat-label">표준편차</span><span class="dist-stat-value">${fmt(Math.round(stdDev))}${unit}</span></div>`;
+    html += `<div class="dist-stat"><span class="dist-stat-label">${avgLabel}</span><span class="dist-stat-value">${fmt(Math.round(mean))}${unit}</span></div>`;
+    html += `<div class="dist-stat"><span class="dist-stat-label">${medLabel}</span><span class="dist-stat-value">${fmt(Math.round(median))}${unit}</span></div>`;
+    html += `<div class="dist-stat"><span class="dist-stat-label">${stdLabel}</span><span class="dist-stat-value">${fmt(Math.round(stdDev))}${unit}</span></div>`;
     html += '</div>';
     
     // 분포 특성 표시
+    const distLabel = currentLang === 'ko' ? '실제 분포' : 'Actual Distribution';
+    const sectionLabel = currentLang === 'ko' ? '각 구간: 약' : 'Each section: approx';
+    const totalLabel = currentLang === 'ko' ? '총' : 'Total';
+    const simLabel = currentLang === 'ko' ? '회 시뮬레이션' : 'simulations';
+    const hoverLabel = currentLang === 'ko' ? '마우스 오버로 상세 정보' : 'hover for details';
+    
     html += '<div class="dist-legend">';
-    html += `<span>📊 실제 분포 (${barCount}개 구간)</span>`;
-    html += `<span>📄 각 구간: 약 ${fmt(Math.round(bucketSize))}${unit}</span>`;
-    html += `<span> 총 ${fmt(total)}회 시뮬레이션 • 막대 위에 개수 표시 • 마우스 오버로 상세 정보</span>`;
+    html += `<span>📊 ${distLabel} (${barCount}${currentLang === 'ko' ? '개 구간' : ' sections'})</span>`;
+    html += `<span>📄 ${sectionLabel} ${fmt(Math.round(bucketSize))}${unit}</span>`;
+    html += `<span> ${totalLabel} ${fmt(total)} ${simLabel} • ${currentLang === 'ko' ? '막대 위에 개수 표시 • ' : 'counts shown above bars • '}${hoverLabel}</span>`;
     html += '</div>';
     
     html += '</div>';
@@ -1403,6 +1742,8 @@ function hideBarTooltip(tooltipId) {
 // ============================================================
 renderAll();
 updateSimulationOptions();
+document.getElementById('lang-btn').textContent = t('langButton');
+updateSimulationLabels();
 </script>
 </body>
 </html>
