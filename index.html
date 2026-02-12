@@ -501,13 +501,31 @@ body {
         <div class="sim-container">
             <div class="sim-controls">
                 <h2>🔬 자동 시뮬레이션</h2>
-                <p class="sim-desc">보석(Lv.20~32)과 금화(Lv.33~39)를 복합 사용하여<br>
-                Lv.40 장비를 만드는 데 필요한 자원을 시뮬레이션합니다.<br>
+                <p class="sim-desc">장비를 목표 레벨까지 강화하는 데 필요한 자원을 시뮬레이션합니다.<br>
                 불능 시 새 장비를 추가하여 처음부터 다시 강화합니다.</p>
+                
+                <div class="sim-input-group">
+                    <label style="font-weight:bold;">목표 레벨:</label>
+                    <select id="sim-target-level" onchange="updateSimulationOptions()" style="padding:8px 12px; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-size:1em;">
+                        <option value="30">Lv.30</option>
+                        <option value="35">Lv.35</option>
+                        <option value="40" selected>Lv.40</option>
+                    </select>
+                </div>
+                
+                <div class="sim-input-group">
+                    <label style="font-weight:bold;">강화 전략:</label>
+                    <select id="sim-strategy" style="padding:8px 12px; background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); font-size:1em;">
+                        <option value="mixed">보석+금화 섞어서 (20~32 보석, 나머지 금화)</option>
+                        <option value="goldOnly">금화만 사용 (20~목표레벨)</option>
+                    </select>
+                </div>
+                
                 <div class="sim-input-group">
                     <label>시뮬레이션 횟수:</label>
                     <input type="number" id="sim-count" value="1000" min="1" max="100000">
                 </div>
+                
                 <button class="sim-run-btn" onclick="runBatchSimulation()" id="sim-run-btn">🚀 시뮬레이션 실행</button>
                 <div class="sim-progress" id="sim-progress" style="display:none;">
                     <div class="progress-bar-bg"><div class="progress-bar-fill" id="sim-progress-fill"></div></div>
@@ -951,7 +969,36 @@ function switchTab(tab) {
 // ============================================================
 // SIMULATION
 // ============================================================
-function simulateOnce() {
+function updateSimulationOptions() {
+    const targetLevel = parseInt(document.getElementById('sim-target-level').value);
+    const strategySelect = document.getElementById('sim-strategy');
+    
+    // 옵션 초기화
+    strategySelect.innerHTML = '';
+    
+    if (targetLevel === 30) {
+        // 30레벨: 보석만, 금화만, 섞어서
+        strategySelect.innerHTML = `
+            <option value="gemOnly">보석만 사용 (20~30)</option>
+            <option value="goldOnly">금화만 사용 (20~30)</option>
+            <option value="mixed">보석+금화 섞어서 (20~30 보석, 31~ 금화는 없음)</option>
+        `;
+    } else if (targetLevel === 35) {
+        // 35레벨: 금화만, 섞어서
+        strategySelect.innerHTML = `
+            <option value="mixed">보석+금화 섞어서 (20~32 보석, 33~35 금화)</option>
+            <option value="goldOnly">금화만 사용 (20~35)</option>
+        `;
+    } else {
+        // 40레벨: 금화만, 섞어서
+        strategySelect.innerHTML = `
+            <option value="mixed">보석+금화 섞어서 (20~32 보석, 33~40 금화)</option>
+            <option value="goldOnly">금화만 사용 (20~40)</option>
+        `;
+    }
+}
+
+function simulateOnce(targetLevel, strategy) {
     let level = 20;
     let goldSpent = 0;
     let gemsSpent = 0;
@@ -959,19 +1006,42 @@ function simulateOnce() {
     let attempts = 0;
     const MAX_ITER = 2000000;
 
-    while (level < 40 && attempts < MAX_ITER) {
+    while (level < targetLevel && attempts < MAX_ITER) {
         attempts++;
         let data, isGem;
 
-        if (level <= 32 && GEM_DATA[level]) {
+        // 전략에 따라 금화/보석 선택
+        if (strategy === 'gemOnly') {
+            // 보석만 사용 (30레벨까지만 가능)
             data = GEM_DATA[level];
-            gemsSpent += data.cost;
-            isGem = true;
-        } else {
+            if (!data) {
+                // 보석 데이터가 없으면 금화로 대체 (보통 안 일어남)
+                data = GOLD_DATA[level];
+                if (!data) break;
+                goldSpent += data.cost;
+                isGem = false;
+            } else {
+                gemsSpent += data.cost;
+                isGem = true;
+            }
+        } else if (strategy === 'goldOnly') {
+            // 금화만 사용
             data = GOLD_DATA[level];
             if (!data) break;
             goldSpent += data.cost;
             isGem = false;
+        } else {
+            // 섞어서 사용 (20~32 보석, 33~ 금화)
+            if (level <= 32 && GEM_DATA[level]) {
+                data = GEM_DATA[level];
+                gemsSpent += data.cost;
+                isGem = true;
+            } else {
+                data = GOLD_DATA[level];
+                if (!data) break;
+                goldSpent += data.cost;
+                isGem = false;
+            }
         }
 
         const roll = Math.random() * 100;
@@ -982,7 +1052,7 @@ function simulateOnce() {
             const floor = getFloor(level);
             level = Math.max(level - 1, floor);
         } else {
-            // Disable — gold only
+            // Disable — gold only (보석은 불능 없음)
             equipmentUsed++;
             level = 20;
         }
@@ -995,6 +1065,9 @@ async function runBatchSimulation() {
     const countInput = document.getElementById('sim-count');
     const count = Math.min(Math.max(parseInt(countInput.value) || 1000, 1), 100000);
     countInput.value = count;
+
+    const targetLevel = parseInt(document.getElementById('sim-target-level').value);
+    const strategy = document.getElementById('sim-strategy').value;
 
     const btn = document.getElementById('sim-run-btn');
     const progressDiv = document.getElementById('sim-progress');
@@ -1010,7 +1083,7 @@ async function runBatchSimulation() {
     for (let i = 0; i < count; i += chunkSize) {
         const end = Math.min(i + chunkSize, count);
         for (let j = i; j < end; j++) {
-            results.push(simulateOnce());
+            results.push(simulateOnce(targetLevel, strategy));
         }
         const pct = Math.round((end / count) * 100);
         progressFill.style.width = pct + '%';
@@ -1020,7 +1093,7 @@ async function runBatchSimulation() {
 
     btn.disabled = false;
     progressDiv.style.display = 'none';
-    renderSimResults(results, count);
+    renderSimResults(results, count, targetLevel, strategy);
 }
 
 function calcStats(arr) {
@@ -1042,7 +1115,7 @@ function calcStats(arr) {
     };
 }
 
-function renderSimResults(results, count) {
+function renderSimResults(results, count, targetLevel, strategy) {
     const el = document.getElementById('sim-results');
     el.style.display = 'block';
 
@@ -1054,9 +1127,21 @@ function renderSimResults(results, count) {
     const ges = calcStats(gems);
     const es = calcStats(equips);
 
+    // 전략 설명
+    const strategyNames = {
+        'gemOnly': '보석만 사용',
+        'goldOnly': '금화만 사용',
+        'mixed': '보석+금화 섞어서'
+    };
+    const strategyDesc = strategyNames[strategy] || strategy;
+
     let html = `<h3>📊 시뮬레이션 결과 (${fmt(count)}회)</h3>`;
+    html += `<div style="margin-bottom:16px; padding:12px; background:var(--bg-secondary); border-radius:8px; border-left:4px solid var(--accent-gold);">
+        <strong>목표:</strong> Lv.${targetLevel} 달성 | <strong>전략:</strong> ${strategyDesc}
+    </div>`;
+    
     html += `<table class="stats-table">
-        <tr><th></th><th>🪙 금화</th><th>💎 보석</th><th>🛡️ 장비 수</th></tr>
+        <tr><th></th><th>🪙 금화</th><th>💎 보석</th><th>🛡️ 사용된 장비 수<br><span style="font-size:0.8em;color:var(--text-muted);font-weight:normal;">(성공 1개 포함)</span></th></tr>
         ${statsRow('평균', gs.mean, ges.mean, es.mean)}
         ${statsRow('중앙값', gs.median, ges.median, es.median)}
         ${statsRow('최솟값', gs.min, ges.min, es.min)}
@@ -1068,7 +1153,7 @@ function renderSimResults(results, count) {
 
     // Equipment count distribution
     html += '<div class="dist-section">';
-    html += '<div class="dist-title">🛡️ 장비 사용 수 분포</div>';
+    html += '<div class="dist-title">🛡️ 사용된 총 장비 수 분포 <span style="font-size:0.85em;color:var(--text-muted);">(최종 성공한 장비 1개 포함)</span></div>';
     html += buildSmoothHistogram(equips, 'var(--tier3)', count, '개', true);
     html += '</div>';
 
@@ -1317,6 +1402,7 @@ function hideBarTooltip(tooltipId) {
 // INIT
 // ============================================================
 renderAll();
+updateSimulationOptions();
 </script>
 </body>
 </html>
