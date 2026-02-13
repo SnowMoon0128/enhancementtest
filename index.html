@@ -209,6 +209,11 @@ body {
     transition: all 0.3s;
     border: 1px solid #222240;
 }
+.level-seg[onclick]:hover {
+    transform: scale(1.1);
+    border-color: #6666ff;
+    box-shadow: 0 0 8px rgba(100,100,255,0.5);
+}
 .level-seg.active { color: white; }
 .level-seg.active.t1 { background: var(--tier1); border-color: var(--tier1); }
 .level-seg.active.t2 { background: var(--tier2); border-color: var(--tier2); }
@@ -860,6 +865,10 @@ const state = {
 let isEnhancing = false;
 let resultTimer = null;
 
+// 이스터에그 관련 변수
+let easterEggClicks = [];
+let easterEggTargetLevel = null;
+
 // ============================================================
 // HELPERS
 // ============================================================
@@ -901,17 +910,28 @@ function addEquipment() {
     };
     state.equipment.push(equip);
     state.selectedId = equip.id;
+    // 새 장비 추가 시 이스터에그 초기화
+    easterEggClicks = [];
+    easterEggTargetLevel = null;
     renderAll();
 }
 
 function selectEquipment(id) {
     state.selectedId = id;
+    // 장비 변경 시 이스터에그 초기화
+    easterEggClicks = [];
+    easterEggTargetLevel = null;
     renderAll();
 }
 
 function discardEquipment(id) {
     state.equipment = state.equipment.filter(e => e.id !== id);
-    if (state.selectedId === id) state.selectedId = null;
+    if (state.selectedId === id) {
+        state.selectedId = null;
+        // 장비 폐기 시 이스터에그 초기화
+        easterEggClicks = [];
+        easterEggTargetLevel = null;
+    }
     renderAll();
 }
 
@@ -949,25 +969,47 @@ function enhance(currency) {
     isEnhancing = true;
     state.stats.attempts++;
     const fromLevel = equip.level;
-    const roll = Math.random() * 100;
     const costLabel = currency === 'gold' ? `🪙${fmt(data.cost)}` : `💎${fmt(data.cost)}`;
 
-    if (roll < data.success) {
+    // 이스터에그: 목표 레벨까지 무조건 성공
+    const hasEasterEgg = easterEggTargetLevel !== null && equip.level < easterEggTargetLevel;
+    
+    if (hasEasterEgg) {
+        // 이스터에그 활성화 상태: 무조건 성공
         equip.level++;
         state.stats.successes++;
         showResultOverlay('success', fromLevel, equip.level);
         addLog('success', equip.name, fromLevel, equip.level, costLabel);
-    } else if (currency === 'gem' || roll < data.success + data.fail) {
-        const floor = getFloor(equip.level);
-        equip.level = Math.max(equip.level - 1, floor);
-        state.stats.failures++;
-        showResultOverlay('failure', fromLevel, equip.level);
-        addLog('failure', equip.name, fromLevel, equip.level, costLabel);
+        
+        // 목표 레벨에 도달하면 이스터에그 해제
+        if (equip.level >= easterEggTargetLevel) {
+            easterEggTargetLevel = null;
+            easterEggClicks = [];
+        }
     } else {
-        equip.disabled = true;
-        state.stats.disables++;
-        showResultOverlay('disable', fromLevel, fromLevel);
-        addLog('disable', equip.name, fromLevel, fromLevel, costLabel);
+        // 일반 강화 로직
+        const roll = Math.random() * 100;
+
+        if (roll < data.success) {
+            equip.level++;
+            state.stats.successes++;
+            showResultOverlay('success', fromLevel, equip.level);
+            addLog('success', equip.name, fromLevel, equip.level, costLabel);
+        } else if (currency === 'gem' || roll < data.success + data.fail) {
+            const floor = getFloor(equip.level);
+            equip.level = Math.max(equip.level - 1, floor);
+            state.stats.failures++;
+            showResultOverlay('failure', fromLevel, equip.level);
+            addLog('failure', equip.name, fromLevel, equip.level, costLabel);
+        } else {
+            equip.disabled = true;
+            state.stats.disables++;
+            showResultOverlay('disable', fromLevel, fromLevel);
+            addLog('disable', equip.name, fromLevel, fromLevel, costLabel);
+            // 장비가 불능 상태가 되면 이스터에그 초기화
+            easterEggClicks = [];
+            easterEggTargetLevel = null;
+        }
     }
 
     renderAll();
@@ -1206,10 +1248,65 @@ function buildLevelBar(currentLevel) {
         if (active) cls += ' active ' + getTierClass(lv);
         if (current) cls += ' current';
         if (cp) cls += ' checkpoint';
-        html += `<div class="${cls}">${lv}</div>`;
+        
+        // 현재 레벨보다 높은 칸에만 클릭 이벤트 추가
+        const clickHandler = lv > currentLevel ? `onclick="handleLevelSegmentClick(${lv})"` : '';
+        const clickableCursor = lv > currentLevel ? 'cursor:pointer;' : '';
+        
+        html += `<div class="${cls}" ${clickHandler} style="${clickableCursor}">${lv}</div>`;
     }
     html += '</div>';
     return html;
+}
+
+// 레벨 세그먼트 클릭 핸들러
+function handleLevelSegmentClick(level) {
+    const equip = getSelectedEquip();
+    if (!equip || equip.disabled || equip.level >= 40) return;
+    
+    // 현재 레벨보다 높은 레벨만 클릭 가능
+    if (level <= equip.level) return;
+    
+    // 이스터에그 클릭 추적
+    easterEggClicks.push({ level: level, timestamp: Date.now() });
+    
+    // 최근 7개 클릭만 유지
+    if (easterEggClicks.length > 7) {
+        easterEggClicks.shift();
+    }
+    
+    // 최근 7번이 모두 같은 레벨인지 확인
+    if (easterEggClicks.length === 7) {
+        const allSameLevel = easterEggClicks.every(click => click.level === level);
+        const firstClick = easterEggClicks[0].timestamp;
+        const lastClick = easterEggClicks[6].timestamp;
+        const timeDiff = lastClick - firstClick;
+        
+        // 모두 같은 레벨이고 30초 이내에 클릭한 경우 이스터에그 활성화
+        if (allSameLevel && timeDiff < 30000) {
+            easterEggTargetLevel = level;
+            // 시각적 피드백 (옵션)
+            console.log(`🎉 이스터에그 활성화! 레벨 ${level}까지 강화 성공 보장!`);
+            
+            // 이스터에그 활성화 메시지 (옵션)
+            const overlay = document.getElementById('result-overlay');
+            const iconEl = document.getElementById('result-icon-big');
+            const textEl = document.getElementById('result-text-big');
+            const subEl = document.getElementById('result-sub');
+            
+            overlay.className = 'result-overlay show result-success';
+            iconEl.textContent = '🎉';
+            textEl.textContent = currentLang === 'ko' ? '이스터에그 발견!' : 'Easter Egg Found!';
+            subEl.textContent = currentLang === 'ko' 
+                ? `레벨 ${level}까지 강화 성공 보장!` 
+                : `Enhancement success guaranteed until Lv.${level}!`;
+            
+            clearTimeout(resultTimer);
+            resultTimer = setTimeout(() => {
+                overlay.className = 'result-overlay';
+            }, 2000);
+        }
+    }
 }
 
 function probRow(label, pct, cls) {
