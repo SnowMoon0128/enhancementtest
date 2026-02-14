@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📜 사이트 정책</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8711105027282773"
+     crossorigin="anonymous"></script>
+<style>
+:root {
+    --bg-primary: #0d0d1a;
+    --bg-secondary: #141428;
+    --bg-card: #1a1a35;
+    --bg-card-hover: #22224a;
+    --text-primary: #e8e8f0;
+    --text-secondary: #8888aa;
+    --text-muted: #555577;
+    --accent-gold: #ffd700;
+    --accent-gem: #00ccff;
+    --border-color: #2a2a50;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Malgun Gothic', 'Segoe UI', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.8;
+}
+.header {
+    background: linear-gradient(135deg, #1a1a40, #0d0d2a);
+    border-bottom: 2px solid var(--border-color);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header h1 { font-size: 1.5em; letter-spacing: 2px; }
+.nav-bar { display: flex; gap: 8px; }
+.nav-btn {
+    padding: 10px 24px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.95em;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+}
+.nav-btn:hover { background: var(--bg-card-hover); color: var(--text-primary); }
+.nav-btn.active {
+    background: linear-gradient(135deg, #2a2a60, #1a1a45);
+    color: var(--text-primary);
+    border-color: #4444aa;
+    box-shadow: 0 0 12px rgba(80,80,200,0.3);
+}
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+.policy-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+.policy-section h2 {
+    color: var(--accent-gold);
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+.policy-section h3 {
+    color: var(--accent-gem);
+    margin-top: 20px;
+    margin-bottom: 12px;
+    font-size: 1.2em;
+}
+.policy-section p, .policy-section li {
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+.policy-section ul {
+    margin-left: 20px;
+    margin-bottom: 16px;
+}
+.policy-section a {
+    color: var(--accent-gem);
+    text-decoration: underline;
+}
+.policy-section a:hover {
+    color: var(--accent-gold);
+}
+.policy-section strong {
+    color: var(--text-primary);
+}
+.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-size: 0.95em;
+}
+</style>
+</head>
+<body>
+<div id="app">
+    <header class="header">
+        <h1 id="header-title">📜 사이트 정책</h1>
+        <div style="display: flex; gap: 20px; align-items: center;">
+            <div class="nav-bar">
+                <a href="index.html" class="nav-btn">⚔️ 장비 강화</a>
+                <a href="accessory.html" class="nav-btn">💍 악세사리 강화</a>
+                <a href="policy.html" class="nav-btn active">📜 정책</a>
+            </div>
+            <button class="nav-btn" onclick="toggleLanguage()" id="lang-btn" style="min-width: 120px;">🌐 English</button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Privacy Policy Section -->
+        <div class="policy-section" id="privacy-policy">
+            <h2 id="privacy-title">개인정보처리방침</h2>
+            <p class="subtitle" id="privacy-date">시행일: 2026년 2월 14일</p>
+            
+            <p id="privacy-intro">
+                강화 시뮬레이터(이하 "서비스")는 이용자의 개인정보를 중요하게 생각하며, 관련 법령을 준수합니다.
+                본 방침은 서비스 이용 과정에서 개인정보가 어떻게 처리되는지 안내합니다.
+            </p>
+
+            <h3 id="privacy-h1">1. 수집하는 개인정보 항목</h3>
+            <p id="privacy-1-1"><strong>(1) 이용자가 별도로 입력/제공하는 정보</strong></p>
+            <ul>
+                <li id="privacy-1-1-1">원칙적으로 회원가입을 받지 않으며, 이용자의 이름/전화번호/주소 등 개인정보를 요구하지 않습니다.</li>
+                <li id="privacy-1-1-2">이용자가 문의를 위해 이메일을 보내는 경우, 이메일 주소 및 문의 내용이 수집될 수 있습니다.</li>
+            </ul>
+
+            <p id="privacy-1-2"><strong>(2) 자동으로 수집될 수 있는 정보</strong></p>
+            <ul>
+                <li id="privacy-1-2-1">서비스 이용 과정에서 IP 주소, 브라우저 종류, 접속 일시, 유입 경로, 기기 정보, 쿠키(Cookie) 등이 자동 수집될 수 있습니다.</li>
+                <li id="privacy-1-2-2">위 정보는 서비스 안정화, 보안, 통계 분석 및 광고 제공을 위해 사용될 수 있습니다.</li>
+            </ul>
+
+            <h3 id="privacy-h2">2. 개인정보의 이용 목적</h3>
+            <ul>
+                <li id="privacy-2-1">문의 대응 및 고객 지원</li>
+                <li id="privacy-2-2">서비스 운영/개선(이용 통계 분석, 오류 확인, 보안 대응)</li>
+                <li id="privacy-2-3">광고 게재 및 광고 성과 측정(예: Google AdSense)</li>
+            </ul>
+
+            <h3 id="privacy-h3">3. 쿠키(Cookie) 및 광고 식별자 사용</h3>
+            <ul>
+                <li id="privacy-3-1">서비스는 제3자 광고 사업자(예: Google)를 통해 광고를 제공할 수 있습니다.</li>
+                <li id="privacy-3-2">Google 및 파트너는 쿠키를 사용하여 이용자의 이전 방문 기록 등을 기반으로 광고를 제공할 수 있습니다(맞춤형 광고 포함).</li>
+                <li id="privacy-3-3">이용자는 아래 방법을 통해 맞춤형 광고를 관리하거나 쿠키 사용을 제한할 수 있습니다.</li>
+            </ul>
+            <ul style="margin-left: 40px;">
+                <li id="privacy-3-3-1">a) Google 광고 설정(Ads Settings)에서 맞춤형 광고 설정 변경<br><a href="https://adssettings.google.com/" target="_blank">https://adssettings.google.com/</a></li>
+                <li id="privacy-3-3-2">b) Google 광고 관련 안내(Advertising and Privacy)<br><a href="https://policies.google.com/technologies/ads" target="_blank">https://policies.google.com/technologies/ads</a></li>
+                <li id="privacy-3-3-3">c) 일부 제3자 광고 쿠키 거부(옵트아웃)<br><a href="https://www.aboutads.info/choices/" target="_blank">https://www.aboutads.info/choices/</a><br><a href="https://www.youronlinechoices.com/" target="_blank">https://www.youronlinechoices.com/</a></li>
+            </ul>
+            <p id="privacy-3-note" style="margin-left: 20px;"><strong>※</strong> 쿠키 저장을 거부할 경우 일부 기능이 정상 동작하지 않을 수 있습니다.</p>
+
+            <h3 id="privacy-h4">4. 개인정보의 보관 및 파기</h3>
+            <ul>
+                <li id="privacy-4-1">문의 메일 등 이용자 제공 정보는 처리 목적 달성 후 지체 없이 파기합니다.</li>
+                <li id="privacy-4-2">법령에 따라 보관이 필요한 경우 해당 기간 동안 보관 후 파기합니다.</li>
+            </ul>
+
+            <h3 id="privacy-h5">5. 개인정보의 제3자 제공</h3>
+            <ul>
+                <li id="privacy-5-1">서비스는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다.</li>
+                <li id="privacy-5-2">다만, 법령에 따른 요청이 있는 경우 예외로 합니다.</li>
+            </ul>
+
+            <h3 id="privacy-h6">6. 개인정보 처리의 위탁</h3>
+            <ul>
+                <li id="privacy-6-1">서비스는 광고 제공 및 측정을 위해 외부 사업자의 서비스를 사용할 수 있습니다(예: Google AdSense).</li>
+                <li id="privacy-6-2">외부 사업자는 자체 개인정보처리방침 및 정책에 따라 정보를 처리할 수 있습니다.</li>
+            </ul>
+
+            <h3 id="privacy-h7">7. 이용자의 권리</h3>
+            <ul>
+                <li id="privacy-7-1">이용자는 언제든지 쿠키 설정을 변경하거나, 문의를 통해 개인정보 관련 요청(열람/정정/삭제 등)을 할 수 있습니다.</li>
+                <li id="privacy-7-2">단, 서비스 구조상 보유 정보가 없거나 법령상 의무가 있는 경우 제한될 수 있습니다.</li>
+            </ul>
+
+            <h3 id="privacy-h8">8. 개인정보 보호책임자 및 문의</h3>
+            <ul>
+                <li id="privacy-8-1">개인정보 관련 문의: vibimbap@gmail.com</li>
+                <li id="privacy-8-2">운영자: vibimbap</li>
+            </ul>
+
+            <h3 id="privacy-h9">9. 방침 변경</h3>
+            <p id="privacy-9-1">
+                본 방침은 법령, 광고 정책, 서비스 변경 사항을 반영하여 수정될 수 있으며, 변경 시 서비스 내 공지 또는 본 페이지 갱신으로 안내합니다.
+            </p>
+        </div>
+
+        <!-- Terms of Service Section -->
+        <div class="policy-section" id="terms-of-service">
+            <h2 id="terms-title">사이트 정책(이용약관/운영정책)</h2>
+            <p class="subtitle" id="terms-date">시행일: 2026년 2월 14일</p>
+
+            <h3 id="terms-h1">1. 목적</h3>
+            <p id="terms-1-1">
+                본 정책은 강화 시뮬레이터(이하 "서비스")의 이용 조건, 운영 기준, 책임 범위 및 이용자 권리·의무를 규정합니다.
+            </p>
+
+            <h3 id="terms-h2">2. 서비스 개요</h3>
+            <ul>
+                <li id="terms-2-1">서비스는 게임 장비 강화 확률(게임사에서 공개한 확률/정보)을 기반으로 한 "시뮬레이션 및 통계 정보"를 제공합니다.</li>
+                <li id="terms-2-2">본 서비스는 게임사/퍼블리셔와 무관한 비공식 팬메이드 도구이며, 게임사의 공식 서비스가 아닙니다.</li>
+            </ul>
+
+            <h3 id="terms-h3">3. 중요 고지(면책)</h3>
+            <ul>
+                <li id="terms-3-1">시뮬레이션 결과는 확률 모델에 기반한 "추정치/통계치"이며, 실제 게임 결과를 보장하지 않습니다.</li>
+                <li id="terms-3-2">이용자가 시뮬레이션 결과를 근거로 한 의사결정(재화 사용 등)으로 발생한 손해에 대해 서비스 운영자는 법령상 허용되는 범위 내에서 책임을 지지 않습니다.</li>
+                <li id="terms-3-3">서비스는 교육·정보 제공을 목적으로 하며, 현금 결제/경품/환전(현금화) 기능을 제공하지 않습니다.</li>
+            </ul>
+
+            <h3 id="terms-h4">4. 광고 및 수익 사용(운영비 공개)</h3>
+            <ul>
+                <li id="terms-4-1">서비스에는 제3자 광고(예: Google AdSense 등)가 표시될 수 있습니다.</li>
+                <li id="terms-4-2">광고 수익은 서버/도메인/유지보수 등 서비스 운영비에 사용됩니다.</li>
+                <li id="terms-4-3">운영자는 운영비 사용 내역을 가능한 범위에서 투명하게 공개할 예정입니다.<br>(예: 월별 요약, 지출 항목 및 금액, 영수증/청구서 근거 등)</li>
+            </ul>
+
+            <h3 id="terms-h5">5. 금지행위</h3>
+            <p id="terms-5-intro">이용자는 다음 행위를 해서는 안 됩니다.</p>
+            <ul>
+                <li id="terms-5-1">서비스의 정상 운영을 방해하는 행위(과도한 요청, 자동화된 트래픽 생성, 취약점 악용 등)</li>
+                <li id="terms-5-2">광고의 무효 클릭/무효 트래픽 유발 등 광고 정책 위반 행위</li>
+                <li id="terms-5-3">불법·유해 콘텐츠 게시, 타인의 권리(저작권/상표권/초상권 등) 침해</li>
+                <li id="terms-5-4">기타 법령 또는 공서양속에 반하는 행위</li>
+            </ul>
+
+            <h3 id="terms-h6">6. 지식재산권 및 자료 출처</h3>
+            <ul>
+                <li id="terms-6-1">서비스에 사용된 게임 관련 명칭/확률/수치 정보의 출처가 게임사 공개 자료인 경우, 해당 권리는 각 권리자에게 있습니다.</li>
+                <li id="terms-6-2">서비스의 코드/기획/디자인(운영자가 직접 제작한 범위)에 대한 권리는 운영자에게 있으며, 무단 복제·배포는 금지됩니다(오픈소스 공개 여부는 별도 표기).</li>
+                <li id="terms-6-3">권리 침해 신고가 접수되는 경우 운영자는 합리적인 범위에서 검토 후 수정·삭제 등 조치를 할 수 있습니다.</li>
+            </ul>
+
+            <h3 id="terms-h7">7. 서비스 변경/중단</h3>
+            <ul>
+                <li id="terms-7-1">운영자는 기능 개선, 정책 준수, 보안, 장애 대응 등을 위해 서비스의 일부 또는 전부를 변경·중단할 수 있습니다.</li>
+                <li id="terms-7-2">무료 호스팅/무료 인프라를 사용하는 경우 트래픽/정책/기술적 제한으로 예고 없이 일시 중단될 수 있습니다.</li>
+            </ul>
+
+            <h3 id="terms-h8">8. 문의</h3>
+            <ul>
+                <li id="terms-8-1">문의: vibimbap@gmail.com</li>
+                <li id="terms-8-2">운영자: vibimbap</li>
+            </ul>
+
+            <h3 id="terms-h9">9. 정책 변경</h3>
+            <p id="terms-9-1">
+                본 정책은 관련 법령, 광고 정책, 서비스 운영 방식 변경에 따라 수정될 수 있으며, 중요한 변경 시 서비스 내 공지를 통해 안내합니다.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentLang = 'ko';
+
+const translations = {
+    ko: {
+        headerTitle: '📜 사이트 정책',
+        equipBtn: '⚔️ 장비 강화',
+        accessoryBtn: '💍 악세사리 강화',
+        policyBtn: '📜 정책',
+        langBtn: '🌐 English',
+        
+        privacyTitle: '개인정보처리방침',
+        privacyDate: '시행일: 2026년 2월 14일',
+        privacyIntro: '강화 시뮬레이터(이하 "서비스")는 이용자의 개인정보를 중요하게 생각하며, 관련 법령을 준수합니다. 본 방침은 서비스 이용 과정에서 개인정보가 어떻게 처리되는지 안내합니다.',
+        
+        privacyH1: '1. 수집하는 개인정보 항목',
+        privacy11: '(1) 이용자가 별도로 입력/제공하는 정보',
+        privacy111: '원칙적으로 회원가입을 받지 않으며, 이용자의 이름/전화번호/주소 등 개인정보를 요구하지 않습니다.',
+        privacy112: '이용자가 문의를 위해 이메일을 보내는 경우, 이메일 주소 및 문의 내용이 수집될 수 있습니다.',
+        privacy12: '(2) 자동으로 수집될 수 있는 정보',
+        privacy121: '서비스 이용 과정에서 IP 주소, 브라우저 종류, 접속 일시, 유입 경로, 기기 정보, 쿠키(Cookie) 등이 자동 수집될 수 있습니다.',
+        privacy122: '위 정보는 서비스 안정화, 보안, 통계 분석 및 광고 제공을 위해 사용될 수 있습니다.',
+        
+        privacyH2: '2. 개인정보의 이용 목적',
+        privacy21: '문의 대응 및 고객 지원',
+        privacy22: '서비스 운영/개선(이용 통계 분석, 오류 확인, 보안 대응)',
+        privacy23: '광고 게재 및 광고 성과 측정(예: Google AdSense)',
+        
+        privacyH3: '3. 쿠키(Cookie) 및 광고 식별자 사용',
+        privacy31: '서비스는 제3자 광고 사업자(예: Google)를 통해 광고를 제공할 수 있습니다.',
+        privacy32: 'Google 및 파트너는 쿠키를 사용하여 이용자의 이전 방문 기록 등을 기반으로 광고를 제공할 수 있습니다(맞춤형 광고 포함).',
+        privacy33: '이용자는 아래 방법을 통해 맞춤형 광고를 관리하거나 쿠키 사용을 제한할 수 있습니다.',
+        privacy331: 'a) Google 광고 설정(Ads Settings)에서 맞춤형 광고 설정 변경',
+        privacy332: 'b) Google 광고 관련 안내(Advertising and Privacy)',
+        privacy333: 'c) 일부 제3자 광고 쿠키 거부(옵트아웃)',
+        privacy3note: '※ 쿠키 저장을 거부할 경우 일부 기능이 정상 동작하지 않을 수 있습니다.',
+        
+        privacyH4: '4. 개인정보의 보관 및 파기',
+        privacy41: '문의 메일 등 이용자 제공 정보는 처리 목적 달성 후 지체 없이 파기합니다.',
+        privacy42: '법령에 따라 보관이 필요한 경우 해당 기간 동안 보관 후 파기합니다.',
+        
+        privacyH5: '5. 개인정보의 제3자 제공',
+        privacy51: '서비스는 원칙적으로 이용자의 개인정보를 제3자에게 제공하지 않습니다.',
+        privacy52: '다만, 법령에 따른 요청이 있는 경우 예외로 합니다.',
+        
+        privacyH6: '6. 개인정보 처리의 위탁',
+        privacy61: '서비스는 광고 제공 및 측정을 위해 외부 사업자의 서비스를 사용할 수 있습니다(예: Google AdSense).',
+        privacy62: '외부 사업자는 자체 개인정보처리방침 및 정책에 따라 정보를 처리할 수 있습니다.',
+        
+        privacyH7: '7. 이용자의 권리',
+        privacy71: '이용자는 언제든지 쿠키 설정을 변경하거나, 문의를 통해 개인정보 관련 요청(열람/정정/삭제 등)을 할 수 있습니다.',
+        privacy72: '단, 서비스 구조상 보유 정보가 없거나 법령상 의무가 있는 경우 제한될 수 있습니다.',
+        
+        privacyH8: '8. 개인정보 보호책임자 및 문의',
+        privacy81: '개인정보 관련 문의: vibimbap@gmail.com',
+        privacy82: '운영자: vibimbap',
+        
+        privacyH9: '9. 방침 변경',
+        privacy91: '본 방침은 법령, 광고 정책, 서비스 변경 사항을 반영하여 수정될 수 있으며, 변경 시 서비스 내 공지 또는 본 페이지 갱신으로 안내합니다.',
+        
+        termsTitle: '사이트 정책(이용약관/운영정책)',
+        termsDate: '시행일: 2026년 2월 14일',
+        
+        termsH1: '1. 목적',
+        terms11: '본 정책은 강화 시뮬레이터(이하 "서비스")의 이용 조건, 운영 기준, 책임 범위 및 이용자 권리·의무를 규정합니다.',
+        
+        termsH2: '2. 서비스 개요',
+        terms21: '서비스는 게임 장비 강화 확률(게임사에서 공개한 확률/정보)을 기반으로 한 "시뮬레이션 및 통계 정보"를 제공합니다.',
+        terms22: '본 서비스는 게임사/퍼블리셔와 무관한 비공식 팬메이드 도구이며, 게임사의 공식 서비스가 아닙니다.',
+        
+        termsH3: '3. 중요 고지(면책)',
+        terms31: '시뮬레이션 결과는 확률 모델에 기반한 "추정치/통계치"이며, 실제 게임 결과를 보장하지 않습니다.',
+        terms32: '이용자가 시뮬레이션 결과를 근거로 한 의사결정(재화 사용 등)으로 발생한 손해에 대해 서비스 운영자는 법령상 허용되는 범위 내에서 책임을 지지 않습니다.',
+        terms33: '서비스는 교육·정보 제공을 목적으로 하며, 현금 결제/경품/환전(현금화) 기능을 제공하지 않습니다.',
+        
+        termsH4: '4. 광고 및 수익 사용(운영비 공개)',
+        terms41: '서비스에는 제3자 광고(예: Google AdSense 등)가 표시될 수 있습니다.',
+        terms42: '광고 수익은 서버/도메인/유지보수 등 서비스 운영비에 사용됩니다.',
+        terms43: '운영자는 운영비 사용 내역을 가능한 범위에서 투명하게 공개할 예정입니다.<br>(예: 월별 요약, 지출 항목 및 금액, 영수증/청구서 근거 등)',
+        
+        termsH5: '5. 금지행위',
+        terms5intro: '이용자는 다음 행위를 해서는 안 됩니다.',
+        terms51: '서비스의 정상 운영을 방해하는 행위(과도한 요청, 자동화된 트래픽 생성, 취약점 악용 등)',
+        terms52: '광고의 무효 클릭/무효 트래픽 유발 등 광고 정책 위반 행위',
+        terms53: '불법·유해 콘텐츠 게시, 타인의 권리(저작권/상표권/초상권 등) 침해',
+        terms54: '기타 법령 또는 공서양속에 반하는 행위',
+        
+        termsH6: '6. 지식재산권 및 자료 출처',
+        terms61: '서비스에 사용된 게임 관련 명칭/확률/수치 정보의 출처가 게임사 공개 자료인 경우, 해당 권리는 각 권리자에게 있습니다.',
+        terms62: '서비스의 코드/기획/디자인(운영자가 직접 제작한 범위)에 대한 권리는 운영자에게 있으며, 무단 복제·배포는 금지됩니다(오픈소스 공개 여부는 별도 표기).',
+        terms63: '권리 침해 신고가 접수되는 경우 운영자는 합리적인 범위에서 검토 후 수정·삭제 등 조치를 할 수 있습니다.',
+        
+        termsH7: '7. 서비스 변경/중단',
+        terms71: '운영자는 기능 개선, 정책 준수, 보안, 장애 대응 등을 위해 서비스의 일부 또는 전부를 변경·중단할 수 있습니다.',
+        terms72: '무료 호스팅/무료 인프라를 사용하는 경우 트래픽/정책/기술적 제한으로 예고 없이 일시 중단될 수 있습니다.',
+        
+        termsH8: '8. 문의',
+        terms81: '문의: vibimbap@gmail.com',
+        terms82: '운영자: vibimbap',
+        
+        termsH9: '9. 정책 변경',
+        terms91: '본 정책은 관련 법령, 광고 정책, 서비스 운영 방식 변경에 따라 수정될 수 있으며, 중요한 변경 시 서비스 내 공지를 통해 안내합니다.'
+    },
+    en: {
+        headerTitle: '📜 Site Policy',
+        equipBtn: '⚔️ Equipment',
+        accessoryBtn: '💍 Accessory',
+        policyBtn: '📜 Policy',
+        langBtn: '🌐 한국어',
+        
+        privacyTitle: 'Privacy Policy',
+        privacyDate: 'Effective Date: February 14, 2026',
+        privacyIntro: 'Enhancement Simulator (hereinafter "Service") values your privacy and complies with relevant laws. This policy explains how personal information is processed during the use of the Service.',
+        
+        privacyH1: '1. Personal Information Collected',
+        privacy11: '(1) Information Provided by Users',
+        privacy111: 'In principle, we do not require registration and do not request personal information such as name, phone number, or address.',
+        privacy112: 'If you send an email for inquiries, your email address and inquiry content may be collected.',
+        privacy12: '(2) Automatically Collected Information',
+        privacy121: 'During service use, IP address, browser type, access time, referral source, device information, and cookies may be automatically collected.',
+        privacy122: 'This information may be used for service stabilization, security, statistical analysis, and advertising.',
+        
+        privacyH2: '2. Purpose of Use',
+        privacy21: 'Inquiry response and customer support',
+        privacy22: 'Service operation/improvement (usage statistics, error detection, security response)',
+        privacy23: 'Advertisement serving and performance measurement (e.g., Google AdSense)',
+        
+        privacyH3: '3. Use of Cookies and Advertising Identifiers',
+        privacy31: 'The Service may provide advertisements through third-party advertising providers (e.g., Google).',
+        privacy32: 'Google and partners may use cookies to serve ads based on your previous visits (including personalized ads).',
+        privacy33: 'You can manage personalized ads or restrict cookie use through the following methods:',
+        privacy331: 'a) Change personalized ad settings in Google Ads Settings',
+        privacy332: 'b) Google Advertising and Privacy information',
+        privacy333: 'c) Opt-out of some third-party advertising cookies',
+        privacy3note: '※ Some features may not work properly if you refuse to store cookies.',
+        
+        privacyH4: '4. Retention and Destruction of Personal Information',
+        privacy41: 'Information provided by users, such as inquiry emails, is destroyed without delay after achieving the processing purpose.',
+        privacy42: 'If retention is required by law, it will be retained for that period and then destroyed.',
+        
+        privacyH5: '5. Provision of Personal Information to Third Parties',
+        privacy51: 'In principle, the Service does not provide users\' personal information to third parties.',
+        privacy52: 'However, exceptions are made in cases required by law.',
+        
+        privacyH6: '6. Consignment of Personal Information Processing',
+        privacy61: 'The Service may use external providers\' services for advertising and measurement (e.g., Google AdSense).',
+        privacy62: 'External providers may process information according to their own privacy policies.',
+        
+        privacyH7: '7. User Rights',
+        privacy71: 'Users can change cookie settings at any time or request personal information-related actions (view/correct/delete, etc.) through inquiries.',
+        privacy72: 'However, this may be limited if there is no information held due to service structure or legal obligations.',
+        
+        privacyH8: '8. Privacy Officer and Contact',
+        privacy81: 'Privacy inquiries: vibimbap@gmail.com',
+        privacy82: 'Operator: vibimbap',
+        
+        privacyH9: '9. Policy Changes',
+        privacy91: 'This policy may be revised to reflect laws, advertising policies, and service changes, and will be announced through in-service notices or page updates when changed.',
+        
+        termsTitle: 'Terms of Service / Operating Policy',
+        termsDate: 'Effective Date: February 14, 2026',
+        
+        termsH1: '1. Purpose',
+        terms11: 'This policy defines the terms of use, operating standards, scope of responsibility, and user rights and obligations of the Enhancement Simulator (hereinafter "Service").',
+        
+        termsH2: '2. Service Overview',
+        terms21: 'The Service provides "simulation and statistical information" based on game equipment enhancement probabilities (probabilities/information disclosed by game companies).',
+        terms22: 'This Service is an unofficial fan-made tool unrelated to game companies/publishers and is not an official service of game companies.',
+        
+        termsH3: '3. Important Notice (Disclaimer)',
+        terms31: 'Simulation results are "estimates/statistics" based on probability models and do not guarantee actual game results.',
+        terms32: 'The Service operator is not liable for damages resulting from users\' decisions (such as using in-game resources) based on simulation results, to the extent permitted by law.',
+        terms33: 'The Service is for educational and informational purposes and does not provide cash payment/prizes/cash conversion features.',
+        
+        termsH4: '4. Advertising and Revenue Use (Operating Cost Disclosure)',
+        terms41: 'Third-party advertisements (e.g., Google AdSense) may be displayed in the Service.',
+        terms42: 'Advertisement revenue is used for service operating costs such as server/domain/maintenance.',
+        terms43: 'The operator will transparently disclose operating cost usage to the extent possible.<br>(e.g., monthly summary, expense items and amounts, receipts/invoices)',
+        
+        termsH5: '5. Prohibited Activities',
+        terms5intro: 'Users must not engage in the following activities:',
+        terms51: 'Acts that interfere with normal service operation (excessive requests, automated traffic generation, vulnerability exploitation, etc.)',
+        terms52: 'Acts that violate advertising policies such as invalid clicks/invalid traffic',
+        terms53: 'Posting illegal or harmful content, infringing on others\' rights (copyright/trademark/publicity rights, etc.)',
+        terms54: 'Other acts that violate laws or public order and morals',
+        
+        termsH6: '6. Intellectual Property and Data Sources',
+        terms61: 'When game-related names/probabilities/numerical information used in the Service come from publicly disclosed game company materials, the rights belong to the respective rights holders.',
+        terms62: 'Rights to the Service\'s code/planning/design (to the extent created by the operator) belong to the operator, and unauthorized reproduction and distribution are prohibited (open source disclosure status will be separately indicated).',
+        terms63: 'If a rights infringement report is received, the operator may review it within a reasonable scope and take actions such as modification or deletion.',
+        
+        termsH7: '7. Service Changes/Suspension',
+        terms71: 'The operator may change or suspend part or all of the Service for functional improvement, policy compliance, security, and incident response.',
+        terms72: 'When using free hosting/free infrastructure, temporary suspension may occur without notice due to traffic/policy/technical limitations.',
+        
+        termsH8: '8. Contact',
+        terms81: 'Inquiries: vibimbap@gmail.com',
+        terms82: 'Operator: vibimbap',
+        
+        termsH9: '9. Policy Changes',
+        terms91: 'This policy may be revised according to changes in relevant laws, advertising policies, and service operations, and important changes will be announced through in-service notifications.'
+    }
+};
+
+function toggleLanguage() {
+    currentLang = currentLang === 'ko' ? 'en' : 'ko';
+    updateLanguage();
+}
+
+function updateLanguage() {
+    const t = translations[currentLang];
+    
+    // Header
+    document.getElementById('header-title').textContent = t.headerTitle;
+    document.getElementById('lang-btn').textContent = t.langBtn;
+    
+    // Privacy Policy
+    document.getElementById('privacy-title').textContent = t.privacyTitle;
+    document.getElementById('privacy-date').textContent = t.privacyDate;
+    document.getElementById('privacy-intro').textContent = t.privacyIntro;
+    
+    document.getElementById('privacy-h1').textContent = t.privacyH1;
+    document.getElementById('privacy-1-1').innerHTML = '<strong>' + t.privacy11 + '</strong>';
+    document.getElementById('privacy-1-1-1').textContent = t.privacy111;
+    document.getElementById('privacy-1-1-2').textContent = t.privacy112;
+    document.getElementById('privacy-1-2').innerHTML = '<strong>' + t.privacy12 + '</strong>';
+    document.getElementById('privacy-1-2-1').textContent = t.privacy121;
+    document.getElementById('privacy-1-2-2').textContent = t.privacy122;
+    
+    document.getElementById('privacy-h2').textContent = t.privacyH2;
+    document.getElementById('privacy-2-1').textContent = t.privacy21;
+    document.getElementById('privacy-2-2').textContent = t.privacy22;
+    document.getElementById('privacy-2-3').textContent = t.privacy23;
+    
+    document.getElementById('privacy-h3').textContent = t.privacyH3;
+    document.getElementById('privacy-3-1').textContent = t.privacy31;
+    document.getElementById('privacy-3-2').textContent = t.privacy32;
+    document.getElementById('privacy-3-3').textContent = t.privacy33;
+    document.getElementById('privacy-3-3-1').innerHTML = t.privacy331 + '<br><a href="https://adssettings.google.com/" target="_blank">https://adssettings.google.com/</a>';
+    document.getElementById('privacy-3-3-2').innerHTML = t.privacy332 + '<br><a href="https://policies.google.com/technologies/ads" target="_blank">https://policies.google.com/technologies/ads</a>';
+    document.getElementById('privacy-3-3-3').innerHTML = t.privacy333 + '<br><a href="https://www.aboutads.info/choices/" target="_blank">https://www.aboutads.info/choices/</a><br><a href="https://www.youronlinechoices.com/" target="_blank">https://www.youronlinechoices.com/</a>';
+    document.getElementById('privacy-3-note').innerHTML = '<strong>※</strong> ' + t.privacy3note;
+    
+    document.getElementById('privacy-h4').textContent = t.privacyH4;
+    document.getElementById('privacy-4-1').textContent = t.privacy41;
+    document.getElementById('privacy-4-2').textContent = t.privacy42;
+    
+    document.getElementById('privacy-h5').textContent = t.privacyH5;
+    document.getElementById('privacy-5-1').textContent = t.privacy51;
+    document.getElementById('privacy-5-2').textContent = t.privacy52;
+    
+    document.getElementById('privacy-h6').textContent = t.privacyH6;
+    document.getElementById('privacy-6-1').textContent = t.privacy61;
+    document.getElementById('privacy-6-2').textContent = t.privacy62;
+    
+    document.getElementById('privacy-h7').textContent = t.privacyH7;
+    document.getElementById('privacy-7-1').textContent = t.privacy71;
+    document.getElementById('privacy-7-2').textContent = t.privacy72;
+    
+    document.getElementById('privacy-h8').textContent = t.privacyH8;
+    document.getElementById('privacy-8-1').textContent = t.privacy81;
+    document.getElementById('privacy-8-2').textContent = t.privacy82;
+    
+    document.getElementById('privacy-h9').textContent = t.privacyH9;
+    document.getElementById('privacy-9-1').textContent = t.privacy91;
+    
+    // Terms of Service
+    document.getElementById('terms-title').textContent = t.termsTitle;
+    document.getElementById('terms-date').textContent = t.termsDate;
+    
+    document.getElementById('terms-h1').textContent = t.termsH1;
+    document.getElementById('terms-1-1').textContent = t.terms11;
+    
+    document.getElementById('terms-h2').textContent = t.termsH2;
+    document.getElementById('terms-2-1').textContent = t.terms21;
+    document.getElementById('terms-2-2').textContent = t.terms22;
+    
+    document.getElementById('terms-h3').textContent = t.termsH3;
+    document.getElementById('terms-3-1').textContent = t.terms31;
+    document.getElementById('terms-3-2').textContent = t.terms32;
+    document.getElementById('terms-3-3').textContent = t.terms33;
+    
+    document.getElementById('terms-h4').textContent = t.termsH4;
+    document.getElementById('terms-4-1').textContent = t.terms41;
+    document.getElementById('terms-4-2').textContent = t.terms42;
+    document.getElementById('terms-4-3').innerHTML = t.terms43;
+    
+    document.getElementById('terms-h5').textContent = t.termsH5;
+    document.getElementById('terms-5-intro').textContent = t.terms5intro;
+    document.getElementById('terms-5-1').textContent = t.terms51;
+    document.getElementById('terms-5-2').textContent = t.terms52;
+    document.getElementById('terms-5-3').textContent = t.terms53;
+    document.getElementById('terms-5-4').textContent = t.terms54;
+    
+    document.getElementById('terms-h6').textContent = t.termsH6;
+    document.getElementById('terms-6-1').textContent = t.terms61;
+    document.getElementById('terms-6-2').textContent = t.terms62;
+    document.getElementById('terms-6-3').textContent = t.terms63;
+    
+    document.getElementById('terms-h7').textContent = t.termsH7;
+    document.getElementById('terms-7-1').textContent = t.terms71;
+    document.getElementById('terms-7-2').textContent = t.terms72;
+    
+    document.getElementById('terms-h8').textContent = t.termsH8;
+    document.getElementById('terms-8-1').textContent = t.terms81;
+    document.getElementById('terms-8-2').textContent = t.terms82;
+    
+    document.getElementById('terms-h9').textContent = t.termsH9;
+    document.getElementById('terms-9-1').textContent = t.terms91;
+}
+
+// Initialize
+updateLanguage();
+</script>
+</body>
+</html>
