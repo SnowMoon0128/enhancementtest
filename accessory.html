@@ -143,7 +143,7 @@ body {
 </div>
 
 <script>
-let currentLang = 'ko';
+let currentLang = localStorage.getItem('enhanceLang') || 'ko';
 
 const translations = {
     ko: {
@@ -174,6 +174,7 @@ const translations = {
 
 function toggleLanguage() {
     currentLang = currentLang === 'ko' ? 'en' : 'ko';
+    localStorage.setItem('enhanceLang', currentLang);
     updateLanguage();
 }
 
@@ -205,6 +206,9 @@ function updateLanguage() {
         infoCard.querySelector('p').innerHTML = t.infoText.replace('\n', '<br>');
     }
 }
+
+// Initialize
+updateLanguage();
 </script>
 </body>
 </html>

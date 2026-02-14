@@ -265,7 +265,7 @@ body {
 </div>
 
 <script>
-let currentLang = 'ko';
+let currentLang = localStorage.getItem('enhanceLang') || 'ko';
 
 const translations = {
     ko: {
@@ -470,6 +470,7 @@ const translations = {
 
 function toggleLanguage() {
     currentLang = currentLang === 'ko' ? 'en' : 'ko';
+    localStorage.setItem('enhanceLang', currentLang);
     updateLanguage();
 }
 
